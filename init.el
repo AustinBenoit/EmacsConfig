@@ -15,13 +15,20 @@
  '(flycheck-python-flake8-executable
    "C:\\Users\\sesa638306\\AppData\\Local\\Programs\\Python\\Python37\\Scripts\\flake8.exe")
  '(inhibit-startup-screen t)
- '(package-selected-packages (quote (go-mode flycheck elpy))))
+ '(package-selected-packages (quote (ivy use-package go-mode flycheck elpy)))
+ '(tooltip-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(whitespace-space ((t (:background "grey30" :foreground "black")))))
+ '(whitespace-space ((t (:background nil :foreground "grey30")))))
+
+;; General set ups ==============================================
+(tool-bar-mode -1)
+(setq visible-bell t)
+
+(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 120)
 
 ;; (setq default-directory "c:/")   Home is fine on linux
 (global-linum-mode t)               ;; Enable line numbers globally
@@ -36,13 +43,14 @@
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 ;; ===============================================================
-;; MEPLA
+;; Packages
 ;; ===============================================================
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
-;; and `package-pinned-packages`. Most users will not need or want to do this.
-;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
+
 (package-initialize)
 
 ;; If there are no archived package contents, refresh them
@@ -56,6 +64,8 @@
 (defvar myPackages
   '(elpy
     flycheck                        ;; On the fly syntax checking
+    ivy
+    swiper
     )
   )
 
@@ -98,16 +108,37 @@
 ;; General =======================================================
 (global-flycheck-mode)
 
+;; Ivy ===========================================================
+
+(require 'ivy)
+
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)	
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (ivy-mode 1))
+
 ;; White Space ===================================================
 (require 'whitespace)
 
 (setq whitespace-style (quote (face spaces tabs space-mark tab-mark)))
 
-(set-face-attribute 'whitespace-space nil :background nil :foreground "gray30")
-
 (add-hook 'prog-mode-hook 'whitespace-mode)
 
 ;; Python ========================================================
+(require 'elpy)
 (elpy-enable)
 (when (require 'flycheck nil t)
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
