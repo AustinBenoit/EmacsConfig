@@ -52,29 +52,15 @@
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
+(unless package-archive-contents
+ (package-refresh-contents))
 
-;; If there are no archived package contents, refresh them
-(when (not package-archive-contents)
-  (package-refresh-contents))
+;; Initialize use-package on non-Linux platforms
+(unless (package-installed-p 'use-package)
+   (package-install 'use-package))
 
-
-;; Installs packages
-;;
-;; myPackages contains a list of package names
-(defvar myPackages
-  '(elpy
-    flycheck                        ;; On the fly syntax checking
-    ivy
-    swiper
-    )
-  )
-
-;; Scans the list in myPackages
-;; If the package listed is not already installed, install it
-(mapc #'(lambda (package)
-          (unless (package-installed-p package)
-            (package-install package)))
-      myPackages)
+(require 'use-package)
+(setq use-package-always-ensure t)
 
 ;; ===============================================================
 ;; ORG MODE SET UPS
@@ -106,17 +92,17 @@
 ;; ===============================================================
 
 ;; General =======================================================
+(use-package flycheck)
 (global-flycheck-mode)
 
+(use-package swiper)
+
 ;; Ivy ===========================================================
-
-(require 'ivy)
-
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
          :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)	
+         ("TAB" . ivy-alt-done)
          ("C-l" . ivy-alt-done)
          ("C-j" . ivy-next-line)
          ("C-k" . ivy-previous-line)
@@ -138,7 +124,7 @@
 (add-hook 'prog-mode-hook 'whitespace-mode)
 
 ;; Python ========================================================
-(require 'elpy)
+(use-package elpy)
 (elpy-enable)
 (when (require 'flycheck nil t)
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
