@@ -1,46 +1,15 @@
-; ================================================================
+;;================================================================
 ;; Basic Set ups
 ;; ===============================================================
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
- '(ansi-color-names-vector
-   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(custom-enabled-themes (quote (wheatgrass)))
- '(elpy-test-pytest-runner-command (quote ("py.test" "--variant" "VARIANT_ION7400")))
- '(flycheck-python-flake8-executable
-   "C:\\Users\\sesa638306\\AppData\\Local\\Programs\\Python\\Python37\\Scripts\\flake8.exe")
- '(inhibit-startup-screen t)
- '(package-selected-packages (quote (ivy use-package go-mode flycheck elpy)))
- '(tooltip-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(whitespace-space ((t (:background nil :foreground "grey30")))))
-
-;; General set ups ==============================================
 (tool-bar-mode -1)
 (setq visible-bell t)
+(setq inhibit-startup-message t)
 
 (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 120)
 
 ;; (setq default-directory "c:/")   Home is fine on linux
 (global-linum-mode t)               ;; Enable line numbers globally
 
-;; Remove the echo from CMD
-;;(defun my-comint-init ()
-;;  (setq comint-process-echoes t))
-;;(add-hook 'comint-mode-hook 'my-comint-init)
-
-;; spell checking for text and programing
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 ;; ===============================================================
 ;; Packages
@@ -62,6 +31,27 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;; General set ups ==============================================
+
+
+;; Remove the echo from CMD
+;;(defun my-comint-init ()
+;;  (setq comint-process-echoes t))
+;;(add-hook 'comint-mode-hook 'my-comint-init)
+
+;; spell checking for text and programing
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 2))
+
+(use-package doom-themes
+  :init (load-theme 'doom-dark+ t))
+
 ;; ===============================================================
 ;; ORG MODE SET UPS
 ;; ===============================================================
@@ -82,7 +72,7 @@
 (setq ispell-program-name (locate-file "hunspell"
       exec-path exec-suffixes 'file-executable-p))
 
-(setq ispell-local-dictionary "en_US") 
+(setq ispell-local-dictionary "en_US")
 
 (setq ispell-local-dictionary-alist
       '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
@@ -96,6 +86,9 @@
 (global-flycheck-mode)
 
 (use-package swiper)
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; Ivy ===========================================================
 (use-package ivy
@@ -116,12 +109,49 @@
   :config
   (ivy-mode 1))
 
+(use-package counsel
+  :bind (("M-x" . counsel-M-x)
+         ("C-x b" . counsel-ibuffer)
+         ("C-x C-f" . counsel-find-file)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history)))
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
 ;; White Space ===================================================
 (require 'whitespace)
 
 (setq whitespace-style (quote (face spaces tabs space-mark tab-mark)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(whitespace-space ((t (:background nil :foreground "grey30")))))
 
 (add-hook 'prog-mode-hook 'whitespace-mode)
+
+;; Projectile ====================================================
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  ;; NOTE: Set this to the folder where you keep your Git repos!
+  (when (file-directory-p "~/Projects")
+    (setq projectile-project-search-path '("~/Projects")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+
+;; Git ==========================================================
+
+(use-package magit)
 
 ;; Python ========================================================
 (use-package elpy)
@@ -131,3 +161,11 @@
   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
 (put 'dired-find-alternate-file 'disabled nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (magit which-key use-package rainbow-delimiters magit-section ivy-rich go-mode git-commit flycheck elpy doom-themes counsel-projectile))))
