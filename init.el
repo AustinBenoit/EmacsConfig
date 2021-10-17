@@ -141,7 +141,6 @@
   :hook (prog-mode . whitespace-mode))
 
 ;; Projectile ====================================================
-
 (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode)
@@ -151,7 +150,7 @@
   :init
   ;; NOTE: Set this to the folder where you keep your Git repos!
   (when (file-directory-p "~/Projects")
-    (setq projectile-project-search-path '("~/Projects", "C:\\Dev\\Git\\HEP\\HEP")))
+    (setq projectile-project-search-path '("~/Projects")))
   (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package counsel-projectile
