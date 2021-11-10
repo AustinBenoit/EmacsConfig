@@ -1,8 +1,7 @@
 ;;================================================================
-
 ;; Basic Set ups
-
 ;; ===============================================================
+
 (tool-bar-mode -1)
 (setq visible-bell t)
 (setq inhibit-startup-message t)
@@ -92,14 +91,12 @@
 
 (use-package flycheck
   :init (global-flycheck-mode 1)
-  (setq flycheck-python-flake8-executable '("C:/Users/sesa638306/AppData/Local/Programs/Python/Python37/Scripts/flake8.exe")))
+  (setq flycheck-python-flake8-executable "C:/Users/sesa638306/AppData/Local/Programs/Python/Python37/Scripts/flake8.exe"))
 
 (use-package swiper)
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
-
-(add-hook 'before-save-hook 'gofmt-before-save)
 
 (use-package lsp-mode
   :init
@@ -108,6 +105,11 @@
          (go-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
+
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 ;; Ivy ===========================================================
 
@@ -176,7 +178,7 @@
   :ensure t
   :init
   (elpy-enable)
-  :config '(elpy-test-pytest-runner-command '("py.test" "--variant" "VARIANT_ION7400"))
+  :config (setq elpy-test-pytest-runner-command '("py.test" "--variant" "VARIANT_ION7400"))
   )
 
 (put 'dired-find-alternate-file 'disabled nil)
@@ -197,7 +199,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(magit which-key use-package rainbow-delimiters magit-section ivy-rich go-mode git-commit flycheck elpy doom-themes counsel-projectile)))
+   (quote
+    (magit which-key use-package rainbow-delimiters magit-section ivy-rich go-mode git-commit flycheck elpy doom-themes counsel-projectile))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
