@@ -1,18 +1,6 @@
-;;================================================================
-;; Basic Set ups
-;; ===============================================================
+(setq gc-cons-threshold 100000000)
 
-(tool-bar-mode -1)
-(setq visible-bell t)
-(setq inhibit-startup-message t)
-(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 120)
-
-;; (setq default-directory "c:/")   Home is fine on linux
-(global-linum-mode t)               ;; Enable line numbers globally
-
-;; ===============================================================
-;; Packages
-;; ===============================================================
+;;; Packages
 
 (require 'package)
 
@@ -32,17 +20,18 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-;; General set ups ==============================================
+;;; General set ups
 
 ;; Remove the echo from CMD
-;;(defun my-comint-init ()
+;; (defun my-comint-init ()
 ;;  (setq comint-process-echoes t))
 ;;(add-hook 'comint-mode-hook 'my-comint-init)
 
-;; spell checking for text and programing
-
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(tool-bar-mode -1)
+(setq visible-bell t)
+(setq inhibit-startup-message t)
+(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 100)
+(global-linum-mode t)
 
 (use-package which-key
   :init (which-key-mode)
@@ -53,24 +42,22 @@
 (use-package doom-themes
   :init (load-theme 'doom-dark+ t))
 
-;; ===============================================================
-;; ORG MODE SET UPS
-;; ===============================================================
+;;; ORG Mode
 
-(require 'org)
+(use-package org
+  :bind (("C-a" . org-agenda)
+	 ("C-l" . org-store-link))
+  :config 
+    (setq org-todo-keywords
+	  '((sequence "TODO" "BLOCKED" "VERIFY" "|" "DONE" "DELEGATED")))
+    (setq org-log-done t))
 
-(define-key global-map "\C-cl" 'org-store-link)
+;;; Spelling
 
-(define-key global-map "\C-ca" 'org-agenda)
-
-(setq org-todo-keywords
-      '((sequence "TODO" "BLOCKED" "VERIFY" "|" "DONE" "DELEGATED")))
-
-(setq org-log-done t)
-
-;; ===============================================================
-;; Set up Hunspell for spell checking
-;; ===============================================================
+(use-package flyspell
+  :hook
+  (text-mode . flyspell-mode)
+  (prog-mode . flyspell-prog-mode))
 
 (add-to-list 'exec-path "C:/hunspell/hunspell-1.3.2-3-w32-bin/bin")
 
@@ -82,15 +69,11 @@
 (setq ispell-local-dictionary-alist
       '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
 
-
-;; ===============================================================
-;; Set Up Programming environment
-;; ===============================================================
-
-;; General =======================================================
+;;; General Programming
 
 (use-package flycheck
   :init (global-flycheck-mode 1)
+  :config
   (setq flycheck-python-flake8-executable "C:/Users/sesa638306/AppData/Local/Programs/Python/Python37/Scripts/flake8.exe"))
 
 (use-package swiper)
@@ -100,8 +83,10 @@
 
 (use-package lsp-mode
   :init
-  (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-keymap-prefix "C-c l"
+	lsp-pyls-plugins-flake8-enabled t)
   :hook (
+	 (python-mode . lsp)
          (go-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
@@ -111,7 +96,7 @@
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
-;; Ivy ===========================================================
+;;; Ivy
 
 (use-package ivy
   :diminish
@@ -199,11 +184,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (magit which-key use-package rainbow-delimiters magit-section ivy-rich go-mode git-commit flycheck elpy doom-themes counsel-projectile))))
+   '(magit which-key use-package rainbow-delimiters magit-section ivy-rich go-mode git-commit flycheck elpy doom-themes counsel-projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(whitespace-space ((t (:background nil :foreground "grey30")))))
+(put 'upcase-region 'disabled nil)
