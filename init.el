@@ -45,7 +45,7 @@
 ;;; ORG Mode
 
 (use-package org
-  :bind (("C-a" . org-agenda)
+  :bind (("C-c a" . org-agenda)
 	 ("C-l" . org-store-link))
   :config 
     (setq org-todo-keywords
