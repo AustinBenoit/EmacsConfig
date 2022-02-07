@@ -96,6 +96,9 @@
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
+;;; Treat headers as C++
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
 ;;; Ivy
 
 (use-package ivy
