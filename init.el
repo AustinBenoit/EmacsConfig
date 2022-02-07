@@ -27,10 +27,12 @@
 ;;  (setq comint-process-echoes t))
 ;;(add-hook 'comint-mode-hook 'my-comint-init)
 
+(customize-set-variable 'tramp-default-method "ssh")
+
 (tool-bar-mode -1)
 (setq visible-bell t)
 (setq inhibit-startup-message t)
-(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 100)
+(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 150)
 (global-linum-mode t)
 
 (use-package which-key
