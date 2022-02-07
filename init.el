@@ -32,7 +32,7 @@
 (tool-bar-mode -1)
 (setq visible-bell t)
 (setq inhibit-startup-message t)
-(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 150)
+(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 140)
 (global-linum-mode t)
 
 (use-package which-key
