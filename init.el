@@ -47,8 +47,7 @@
 ;;; ORG Mode
 
 (use-package org
-  :bind (("C-c a" . org-agenda)
-	 ("C-l" . org-store-link))
+  :bind (("C-c a" . org-agenda))
   :config 
     (setq org-todo-keywords
 	  '((sequence "TODO" "BLOCKED" "VERIFY" "|" "DONE" "DELEGATED")))
