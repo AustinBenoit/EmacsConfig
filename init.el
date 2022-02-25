@@ -89,6 +89,7 @@
   :hook (
 	 (python-mode . lsp)
          (go-mode . lsp)
+	 ((c-mode c++-mode c-or-c++-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
