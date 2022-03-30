@@ -1,5 +1,17 @@
 (setq gc-cons-threshold 100000000)
 
+;; Some local variables for per system config
+(setq font-size 100)
+
+(cond
+ ((string= system-type "windows-nt")
+  (add-to-list 'exec-path "C:/hunspell/hunspell-1.3.2-3-w32-bin/bin")
+  (setq font-size 110))
+ ((string= system-type "gnu/linux")
+  (setq font-size 100))
+ ((string= system-type "darwin")
+  (setq font-size 120)))
+
 ;;; Packages
 
 (require 'package)
@@ -31,7 +43,7 @@
 (tool-bar-mode -1)
 (setq visible-bell t)
 (setq inhibit-startup-message t)
-(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 110)
+(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height font-size)
 (global-linum-mode t)
 
 (use-package which-key
@@ -76,8 +88,6 @@
   :hook
   (text-mode . flyspell-mode)
   (prog-mode . flyspell-prog-mode))
-
-(add-to-list 'exec-path "C:/hunspell/hunspell-1.3.2-3-w32-bin/bin")
 
 (setq ispell-program-name (locate-file "hunspell"
     exec-path exec-suffixes 'file-executable-p))
