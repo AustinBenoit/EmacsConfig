@@ -5,7 +5,6 @@
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
@@ -32,7 +31,7 @@
 (tool-bar-mode -1)
 (setq visible-bell t)
 (setq inhibit-startup-message t)
-(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 140)
+(set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 110)
 (global-linum-mode t)
 
 (use-package which-key
@@ -45,6 +44,24 @@
   :init (load-theme 'doom-dark+ t))
 
 ;;; ORG Mode
+
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory "~/Notes/Roam/")
+  (org-roam-dailies-directory "~/Notes/Journal/")
+  :bind (("C-c n l"   . org-roam-buffer-toggle)
+         ("C-c n f"   . org-roam-node-find)
+	 ("C-c n d"   . org-roam-dailies-goto-date)
+	 ("C-c n c"   . org-roam-dailies-capture-today)
+	 ("C-c n C r" . org-roam-dailies-capture-tomorrow)
+	 ("C-c n t"   . org-roam-dailies-goto-today)
+	 ("C-c n y"   . org-roam-dailies-goto-yesterday)
+	 ("C-c n r"   . org-roam-dailies-goto-tomorrow)
+	 ("C-c n g"   . org-roam-graph)
+	 ("C-c n i"   . org-roam-node-insert))
+  :config
+  (org-roam-db-autosync-enable))
 
 (use-package org
   :bind (("C-c a" . org-agenda))
@@ -189,7 +206,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(magit which-key use-package rainbow-delimiters magit-section ivy-rich go-mode git-commit flycheck elpy doom-themes counsel-projectile)))
+   (quote
+    (org-roam magit which-key use-package rainbow-delimiters magit-section ivy-rich go-mode git-commit flycheck elpy doom-themes counsel-projectile)))
+ '(tramp-default-method "ssh"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
