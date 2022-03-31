@@ -1,7 +1,8 @@
 (setq gc-cons-threshold 100000000)
 
 ;; Some local variables for per system config
-(setq font-size 100)
+(defvar-local font-size 100)
+(defvar-local spelling-reg "en_US")
 
 (cond
  ((string= system-type "windows-nt")
@@ -10,6 +11,8 @@
  ((string= system-type "gnu/linux")
   (setq font-size 100))
  ((string= system-type "darwin")
+  (add-to-list 'exec-path "/usr/local/bin")
+  (setq spelling-reg "en_CA")
   (setq font-size 120)))
 
 ;;; Packages
@@ -61,7 +64,7 @@
   :ensure t
   :custom
   (org-roam-directory "~/Notes/Roam/")
-  (org-roam-dailies-directory "~/Notes/Journal/")
+  (org-roam-dailies-directory "Journal/")
   :bind (("C-c n l"   . org-roam-buffer-toggle)
          ("C-c n f"   . org-roam-node-find)
 	 ("C-c n d"   . org-roam-dailies-goto-date)
@@ -92,10 +95,10 @@
 (setq ispell-program-name (locate-file "hunspell"
     exec-path exec-suffixes 'file-executable-p))
 
-(setq ispell-local-dictionary "en_US")
+(setq ispell-local-dictionary spelling-reg)
 
 (setq ispell-local-dictionary-alist
-      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
+      '((spelling-reg "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" spelling-reg) nil utf-8)))
 
 ;;; General Programming
 
@@ -216,8 +219,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (org-roam magit which-key use-package rainbow-delimiters magit-section ivy-rich go-mode git-commit flycheck elpy doom-themes counsel-projectile)))
+   '(org-roam magit which-key use-package rainbow-delimiters magit-section ivy-rich go-mode git-commit flycheck elpy doom-themes counsel-projectile))
  '(tramp-default-method "ssh"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
