@@ -62,6 +62,7 @@
 
 (use-package org-roam
   :ensure t
+  :defer t
   :custom
   (org-roam-directory "~/Notes/Roam/")
   (org-roam-dailies-directory "Journal/")
@@ -98,7 +99,7 @@
 (setq ispell-local-dictionary spelling-reg)
 
 (setq ispell-local-dictionary-alist
-      '((spelling-reg "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" spelling-reg) nil utf-8)))
+      `((,spelling-reg "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" ,spelling-reg) nil utf-8)))
 
 ;;; General Programming
 
