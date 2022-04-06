@@ -13,7 +13,8 @@
  ((string= system-type "darwin")
   (add-to-list 'exec-path "/usr/local/bin")
   (setq spelling-reg "en_CA")
-  (setq font-size 120)))
+  (setq font-size 150)
+  (setq mac-command-modifier 'meta)))
 
 ;;; Packages
 
@@ -84,6 +85,19 @@
     (setq org-todo-keywords
 	  '((sequence "TODO" "BLOCKED" "VERIFY" "|" "DONE" "DELEGATED")))
     (setq org-log-done t))
+
+(use-package org-roam-ui
+  :after org-roam
+  ;;normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;a hookable mode anymore, you're advised to pick something yourself
+  ;;if you don't care about startup time, use
+  :hook (after-init . org-roam-ui-mode)
+  :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start nil)
+    :bind(("C-c n u"   . org-roam-ui-mode)))
 
 ;;; Spelling
 
