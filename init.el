@@ -100,6 +100,10 @@
           org-roam-ui-open-on-start nil)
     :bind(("C-c n u"   . org-roam-ui-mode)))
 
+(load-library "find-lisp")
+(setq org-agenda-files
+   (find-lisp-find-files "~/Notes" "\.org$"))
+
 ;;; Spelling
 
 (use-package flyspell
