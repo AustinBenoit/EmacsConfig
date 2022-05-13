@@ -214,15 +214,6 @@
 
 (use-package magit)
 
-;; Python ========================================================
-
-(use-package elpy
-  :ensure t
-  :init
-  (elpy-enable)
-  :config (setq elpy-test-pytest-runner-command '("py.test" "--variant" "VARIANT_ION7400"))
-  )
-
 (put 'dired-find-alternate-file 'disabled nil)
 
 (use-package company
