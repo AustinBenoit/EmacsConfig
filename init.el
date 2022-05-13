@@ -131,6 +131,9 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package go-mode
+  :ensure t)
+
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l"
