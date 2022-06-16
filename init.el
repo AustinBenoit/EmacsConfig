@@ -1,4 +1,14 @@
+;;; init.el
+
+;; My configuration file.
+;; Basic Idea is to have each major area have its own file and them
+;; I will add them as needed.
+
 (setq gc-cons-threshold 100000000)
+
+(add-to-list 'load-path (expand-file-name "modules/" user-emacs-directory))
+
+(require 'themes)
 
 ;; Some local variables for per system config
 (defvar-local font-size 100)
@@ -17,6 +27,10 @@
   (setq mac-command-modifier 'meta)))
 
 ;;; Packages
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
+(setq indent-line-function 'insert-tab)
 
 (require 'package)
 
@@ -55,9 +69,6 @@
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 2))
-
-(use-package doom-themes
-  :init (load-theme 'doom-dark+ t))
 
 ;;; ORG Mode
 
@@ -142,6 +153,8 @@
 	 (python-mode . lsp)
          (go-mode . lsp)
 	 ((c-mode c++-mode c-or-c++-mode) . lsp)
+	 (javascript-mode . lsp)
+	 (typescript-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
@@ -152,6 +165,13 @@
 
 ;;; Treat headers as C++
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
+
+
+(use-package typescript-mode
+  :ensure t
+  )
+
 
 ;;; Ivy
 
@@ -225,6 +245,11 @@
   (global-company-mode t))
 
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+
+(use-package yaml-mode
+  :ensure t)
+
+(add-to-list 'auto-mode-alist '("\\.yml\\'". yaml-mode))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
