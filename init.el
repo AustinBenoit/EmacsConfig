@@ -96,7 +96,12 @@
   :config 
     (setq org-todo-keywords
 	  '((sequence "TODO" "BLOCKED" "VERIFY" "|" "DONE" "DELEGATED")))
-    (setq org-log-done t))
+    (setq org-log-done t)
+    (setq org-agenda-files (directory-files-recursively "~/Notes/" "\\.org$")))
+
+  (use-package org-bullets
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package org-roam-ui
   :after org-roam
@@ -108,12 +113,26 @@
     (setq org-roam-ui-sync-theme t
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start nil)
+          org-roam-ui-open-on-start nil
+          org-hide-emphasis-markers t)
     :bind(("C-c n u"   . org-roam-ui-mode)))
+ (let* ((variable-tuple
+          (cond ((x-list-fonts "Ariel")         '(:font "Ariel"))
+                ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+                (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+         (base-font-color     (face-foreground 'default nil 'default))
+         (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
 
-(load-library "find-lisp")
-(setq org-agenda-files
-   (find-lisp-find-files "~/Notes" "\.org$"))
+    (custom-theme-set-faces
+     'user
+     `(org-level-8 ((t (,@headline ,@variable-tuple))))
+     `(org-level-7 ((t (,@headline ,@variable-tuple))))
+     `(org-level-6 ((t (,@headline ,@variable-tuple))))
+     `(org-level-5 ((t (,@headline ,@variable-tuple))))
+     `(org-level-4 ((t (,@headline ,@variable-tuple))))
+     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.25))))
+     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))))
 
 ;;; Spelling
 
@@ -148,14 +167,14 @@
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l"
-	lsp-pyls-plugins-flake8-enabled t)
+  lsp-pyls-plugins-flake8-enabled t)
   :hook (
-	 (python-mode . lsp)
-         (go-mode . lsp)
-	 ((c-mode c++-mode c-or-c++-mode) . lsp)
-	 (javascript-mode . lsp)
-	 (typescript-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
+  (python-mode . lsp)
+  (go-mode . lsp)
+  ((c-mode c++-mode c-or-c++-mode) . lsp)
+  (javascript-mode . lsp)
+   (typescript-mode . lsp)
+   (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
 (defun lsp-go-install-save-hooks ()
@@ -258,11 +277,19 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    '(org-roam magit which-key use-package rainbow-delimiters magit-section ivy-rich go-mode git-commit flycheck elpy doom-themes counsel-projectile))
- '(tramp-default-method "ssh"))
+ '(tramp-default-method "ssh" t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-level-1 ((t (:inherit default :weight bold :foreground "#d4d4d4" :height 1.5))))
+ '(org-level-2 ((t (:inherit default :weight bold :foreground "#d4d4d4" :height 1.25))))
+ '(org-level-3 ((t (:inherit default :weight bold :foreground "#d4d4d4" :height 1.1))))
+ '(org-level-4 ((t (:inherit default :weight bold :foreground "#d4d4d4"))))
+ '(org-level-5 ((t (:inherit default :weight bold :foreground "#d4d4d4"))))
+ '(org-level-6 ((t (:inherit default :weight bold :foreground "#d4d4d4"))))
+ '(org-level-7 ((t (:inherit default :weight bold :foreground "#d4d4d4"))))
+ '(org-level-8 ((t (:inherit default :weight bold :foreground "#d4d4d4"))))
  '(whitespace-space ((t (:background nil :foreground "grey30")))))
 (put 'upcase-region 'disabled nil)
