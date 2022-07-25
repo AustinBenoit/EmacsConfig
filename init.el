@@ -156,7 +156,8 @@
          ("C-k" . ivy-previous-line)
          ("C-d" . ivy-reverse-i-search-kill))
   :config
-  (ivy-mode 1))
+  (ivy-mode 1)
+  (setq ivy-use-selectable-prompt t))
 
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
