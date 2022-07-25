@@ -44,7 +44,7 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 (setq indent-line-function 'insert-tab)
-
+(global-display-fill-column-indicator-mode t)
 
 
 ;;; The modules that control my config
