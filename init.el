@@ -40,6 +40,14 @@
   (setq font-size 150)
   (setq mac-command-modifier 'meta)))
 
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns x))
+  :config
+  (setq exec-path-from-shell-variables '("PATH" "GOPATH"))
+  (exec-path-from-shell-initialize))
+
+
 
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
