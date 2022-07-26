@@ -118,6 +118,8 @@
 (use-package go-mode
   :ensure t)
 
+(use-package groovy-mode)
+
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l"
@@ -127,8 +129,8 @@
   (go-mode . lsp)
   ((c-mode c++-mode c-or-c++-mode) . lsp)
   (javascript-mode . lsp)
-   (typescript-mode . lsp)
-   (lsp-mode . lsp-enable-which-key-integration))
+  (typescript-mode . lsp)
+  (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
 (defun lsp-go-install-save-hooks ()
