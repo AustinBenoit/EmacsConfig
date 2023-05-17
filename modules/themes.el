@@ -7,7 +7,7 @@
 ;;; Code:
 
 (use-package doom-themes
-  :init (load-theme 'doom-dark+ t))
+  :init (load-theme 'doom-homage-black t))
 
 (provide 'themes)
 ;;; themes.el ends here
