@@ -71,6 +71,8 @@
 ;;  (setq comint-process-echoes t))
 ;;(add-hook 'comint-mode-hook 'my-comint-init)
 
+(use-package dockerfile-mode)
+
 (customize-set-variable 'tramp-default-method "ssh")
 
 (tool-bar-mode -1)
